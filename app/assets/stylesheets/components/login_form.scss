@@ -1,0 +1,104 @@
+.login-form-box{
+  margin: auto;
+  width: 350px;
+  background-color: white;
+  padding-top: 20px; 
+  padding-bottom: 20px;
+  padding-left: 30px;
+  padding-right: 30px;
+  border: 1px solid rgb(233, 233, 233);
+}
+
+.login-form-container{
+  // margin-top: 75px;
+  
+  margin: 60px 18px 60px 18px;
+  
+}
+
+.login-form-container h1{
+  font-size: 30px;
+}
+
+.login-form{
+  
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  padding: 5px;
+}
+
+.login-input{
+  width: 100%;
+  padding: 12px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  border: 1px solid rgb(228, 227, 227);
+}
+
+.login-input:focus{
+  border: 1px solid #028858
+}
+
+.session-submit{
+  cursor: pointer;
+  color: white;
+  background-color: #028858;
+  padding: 12px;
+  font-size: 14px;
+  border-style: none;
+  text-align: center;
+}
+
+.demo-user-submit{
+  cursor: pointer;
+  color: white;
+  background-color: red;
+  padding: 12px;
+  font-size: 14px;
+  border-style: none;
+  text-align: center;
+}
+
+.demo-user-submit:hover{
+  background-color:rgb(104, 3, 3)
+}
+
+.session-submit:hover{
+  background-color:#015738
+}
+
+.login-footer{
+  display: flex;
+  margin: auto;
+  padding: 20px;
+  // border-top: 0.1rem solid #E8E8E8;
+  // border-bottom: 0.1rem solid #E8E8E8;
+}
+
+.login-subscript{
+  padding-right: 5px;
+}
+
+.login-link{
+  color: #2752FF;
+
+}
+
+.login-link:hover{
+  color: black;
+}
+
+.login-errors{
+  color: red;
+  margin: auto;
+  margin-top: 10px;
+  animation-name: flash;
+  animation-duration: 3s;
+}
+
+@keyframes flash {
+  from {background-color: red;}
+  to {background-color: white;}
+}
+

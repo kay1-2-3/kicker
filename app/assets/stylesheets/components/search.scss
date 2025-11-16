@@ -1,0 +1,179 @@
+.modal-background-search {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 10;
+}
+
+.modal-child-search {
+  position: relative;
+  top: 40px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
+
+.search-container{
+  width: 100vw;
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 83px;
+  // padding-top: 42px;
+  padding-left: 20px;
+  box-shadow: 2px 0 6px 0 #888888;
+}
+
+.search-input{
+  // padding-left: 42px;
+  // padding-top: 42px;
+  // padding-bottom: 42px;
+  font-size: 20px;
+  line-height: 2.4rem;
+  width: 475%;
+}
+
+.search-close{
+  color: gray;
+  padding-right: 60px;
+  font-size: 20px;
+  font-weight: lighter;
+}
+.search-close:hover{
+  font-weight: bold;
+  color: #028858;
+  cursor: pointer;
+}
+
+.search-page-container{
+  background-color: white;
+  
+}
+.search-query-container{
+  border-bottom: 0.1rem solid #E8E8E8;
+}
+.search-query{
+  color: #282828;
+  font-size: 21px;
+  padding: 60px 0px;
+  text-align: center;
+  justify-content: center;
+  margin: auto;
+  max-width: 1300px;
+}
+.search-word{
+  color: #282828;
+  font-size: 18px;
+  padding: 12px;
+  margin: 0px 12px;
+  box-shadow: 2px 0 6px 0 #b4b4b4;
+}
+
+.search-results-container{
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  max-width: 1300px;
+}
+
+.search-results{
+  max-width: 1366px;
+  padding: 36px 60px 60px;
+}
+.search-results h1{
+  padding-top: 12px;
+  margin-bottom: 30px;
+  margin-left: 60px;
+  
+  font-size: 22px;
+  strong{
+    color: #009E74;
+    font-weight: bold;
+  }
+}
+.search-no-results{
+  margin-left: 120px;
+  h1{
+    padding-top: 30px;
+    
+    font-size: 18px;
+    color:#D8503D;
+  }
+  h2{
+    padding-left: 22px;
+    padding-top: 5px;
+    padding-bottom: 20px;
+    font-size: 14px;
+    color:#696969;
+  }
+}
+.search-projects-container{
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 1366px;
+}
+
+.search-project-list-item{
+  margin: 0px 18px;
+  width: 389px;
+  border: 0.1rem solid #E8E8E8;
+  margin: 0px 18px 28px;
+}
+.search-project-list-img{
+  width: 389px;
+  height: 220px;
+}
+.search-project-list-details{
+  padding: 24px 18px 0px;
+  height: 180px;
+}
+.search-project-list-link{
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+
+.search-project-list-link:hover{
+  text-decoration: underline;
+}
+.search-project-list-description{
+  color: #696969;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+.search-project-list-creator{
+  color: #282828;
+  font-size: 13px;
+}
+.search-project-list-details-2{
+  padding: 18px;
+}
+.search-project-list-funding-bar{
+  background-color:#037362;
+  height: 0.3rem;
+  width: attr(search-project-list-funding-bar);
+  margin-bottom: 10px;
+}
+.search-project-list-funding{
+  font-size: 13px;
+  color: #037362;
+}
+.search-project-list-percentage, .search-project-list-days{
+  font-size: 13px;
+  color: #656969;
+}
+.search-project-list-footer{
+  display: flex;
+  flex-direction: row;
+  margin-top: 20px;
+  font-size: 13px;
+  color: #656969;
+  li:first-child{
+    margin-right: 24px;
+  }
+}
+
