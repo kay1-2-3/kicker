@@ -3,8 +3,6 @@
 
 Kicker is a Kickstarter-style crowdfunding platform where creators can showcase their passion projects and seek financial support to bring them to life. Users can launch their own projects or browse others by category, explore project details, and contribute funds in exchange for rewards.
 
-Try out the app here on [Heroku!](https://kicker.herokuapp.com/)
-
 The Kicker build utilizes a React/Redux frontend framework integrated with a Ruby on Rails/PostgreSQL backend.
 
 ## Technologies:
