@@ -41,15 +41,9 @@ const App = () => (
     <div className='category-links-container-bottom'><CategoryNavContainer/></div>
     <footer>
       <nav className='footer-page'>
-        <div className='footer-box'> 
+        <div className='footer-box'>
           <section className='footer-links'>
-            <div className="social-name">Kicker, PBC <i className="far fa-copyright"></i> 2021</div>
-            <div className="social-links">
-              <a  href="https://github.com/taylormusolf" target="_blank"><i className="fab fa-github"></i></a>
-              <a  href="https://www.linkedin.com/in/taylor-musolf" target="_blank"><i className="fab fa-linkedin-in"></i></a>
-              <a  href="https://angel.co/u/taylor-musolf" target="_blank"><i className="fab fa-angellist"></i></a>
-            </div>
-            
+            <div className="footer-copyright">Kicker <i className="far fa-copyright"></i> {new Date().getFullYear()}</div>
           </section>
         </div>
       </nav>

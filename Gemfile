@@ -1,13 +1,15 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.1.1'
+ruby '~> 3.4.0'  # or use 3.1.1 if you prefer rbenv/rvm to match exactly
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 7.0.3'
-# Use postgresql as the database for Active Record
+# Use postgresql as the database for Active Record (production)
 gem 'pg', '>= 0.18', '< 2.0'
+# Use SQLite in development so the app runs without a local PostgreSQL server
+gem 'sqlite3', '~> 1.4'
 # Use Puma as the app server
 gem 'puma', '~> 3.11'
 # Use SCSS for stylesheets
@@ -36,7 +38,14 @@ gem "aws-sdk-s3"
 # Reduces boot times through caching; required in config/boot.rb
 # gem 'bootsnap', '>= 1.1.0', require: false
 gem 'open-uri'
+# Ruby 3.4+ moved these out of stdlib; add explicitly so Rails and gems can load them
+gem 'base64'
+gem 'bigdecimal'
+gem 'csv'
+gem 'mutex_m'
 gem 'email_validator', require: 'email_validator/strict'
+# Pin nokogiri to a version with prebuilt Windows (x64-mingw-ucrt) binaries so bundle install works without compiling
+gem 'nokogiri', '>= 1.18.4'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -44,6 +53,7 @@ group :development, :test do
 end
 
 group :development do
+  gem 'wdm', '>= 0.1.0' if Gem.win_platform?
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
   gem 'web-console', '>= 3.3.0'
   gem 'listen'

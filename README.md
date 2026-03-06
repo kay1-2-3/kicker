@@ -5,6 +5,76 @@ Kicker is a Kickstarter-style crowdfunding platform where creators can showcase 
 
 The Kicker build utilizes a React/Redux frontend framework integrated with a Ruby on Rails/PostgreSQL backend.
 
+## Getting Started
+
+### Prerequisites
+
+- **Ruby 3.1.1** (see [ruby-lang.org](https://www.ruby-lang.org/) or use [rbenv](https://github.com/rbenv/rbenv) / [rvm](https://rvm.io/))
+- **Node.js** (v14+ recommended; the repo lists 10.13.0 but current Node works)
+- **PostgreSQL** (installed and running)
+- **npm** (comes with Node)
+
+### 1. Clone and enter the project
+
+```bash
+cd Kicker-main
+```
+
+### 2. Backend (Rails)
+
+```bash
+# Install Ruby gems
+bundle install
+
+# Create the database
+bundle exec rails db:create
+
+# Run migrations
+bundle exec rails db:migrate
+
+# (Optional) Seed the database with sample projects
+bundle exec rails db:seed
+```
+
+### 3. Frontend (React + Webpack)
+
+```bash
+# Install Node dependencies
+npm install
+
+# Build the JavaScript bundle (run once, or use `npm start` to watch)
+npm run start
+```
+
+Keep `npm run start` running in a separate terminal so the bundle rebuilds when you change frontend code.
+
+### 4. Run the app
+
+In another terminal:
+
+```bash
+bundle exec rails server
+```
+
+Open **http://localhost:3000** in your browser.
+
+### Troubleshooting
+
+- **PostgreSQL connection errors (e.g. on Windows):**  
+  Edit `config/database.yml` and set `username` and `password` for the `development` section to match your PostgreSQL user (or leave blank if your OS user is the DB owner).
+
+- **"React is broke!" on the page:**  
+  Make sure you ran `npm install` and `npm run start` (or at least one `npm run start` / `webpack` build) so `app/assets/javascripts/bundle.js` exists.
+
+- **"Could not find rails-7.0.7... Run \`bundle install\`":**  
+  Run Rails via Bundler: `bundle exec rails db:create` (and use `bundle exec` for all `rails` commands so the correct gems are used).
+
+- **Database or migration errors:**  
+  Try `bundle exec rails db:drop db:create db:migrate` (this wipes the dev DB and recreates it).
+
+- **Image uploads:**  
+  Development uses local disk storage; no AWS setup is required. Production uses S3 via Rails credentials.
+
 ## Technologies:
 
 ### Frontend

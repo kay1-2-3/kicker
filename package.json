@@ -1,6 +1,9 @@
 {
   "name": "kicker",
   "private": true,
+  "devDependencies": {
+    "cross-env": "^7.0.3"
+  },
   "dependencies": {
     "@babel/core": "^7.13.14",
     "@babel/preset-env": "^7.13.12",
@@ -28,22 +31,21 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack --mode=development --watch",
-    "postinstall": "webpack"
+    "start": "cross-env NODE_OPTIONS=--openssl-legacy-provider webpack --mode=development --watch",
+    "postinstall": "cross-env NODE_OPTIONS=--openssl-legacy-provider webpack"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/taylormusolf/Kicker.git"
+    "url": ""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/taylormusolf/Kicker/issues"
+    "url": ""
   },
   "engines": {
-    "node": "10.13.0",
-    "npm": "6.4.1"
+    "node": ">=18.0.0"
   },
-  "homepage": "https://github.com/taylormusolf/Kicker#readme"
+  "homepage": ""
 }

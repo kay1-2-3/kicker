@@ -1,15 +1,6 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-W40TERZRVJ"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-W40TERZRVJ');
-    </script>
     <title>Kicker</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -25,13 +16,11 @@
       window.favicon = "<%= image_url('favicon.png') %>";
     </script>
     <meta property="og:title" content="Kicker" />
-     <meta property='og:image' content="<%= image_url('kickbacker.PNG') %>"/>
-     <meta property="og:description"
-       content="A clone of Kickstarter, a crowdfunding platform that allows content creators to post their dream projects that they would like others to help bring to life by meeting their funding goal."
-     />
-     <meta property="og:url"
-       content="https://kicker.herokuapp.com/"
-     />
+    <meta property="og:image" content="<%= image_url('kickbacker.PNG') %>" />
+    <meta property="og:description"
+      content="A crowdfunding platform that allows content creators to post their dream projects and seek support to bring them to life."
+    />
+    <meta property="og:url" content="<%= request.original_url rescue '' %>" />
   
   </head>
 

@@ -8,6 +8,14 @@
 
 require 'open-uri'
 
+# Attach project photo from URL; skip and warn if the URL is unavailable (404, etc.)
+def safe_attach_photo(project, url, ext = 'jpg')
+  file = URI.open(url)
+  project.photo.attach(io: file, filename: "#{project.id}.#{ext}")
+rescue OpenURI::HTTPError, SocketError, Errno::ECONNREFUSED => e
+  puts "  [Seed] Skipping photo for '#{project.title}': #{e.message}"
+end
+
 User.destroy_all
 Project.destroy_all
 Backing.destroy_all
@@ -16,17 +24,16 @@ Category.destroy_all
 
 puts 'Tables destroyed'
 
-#reset the primary key sequence
-ActiveRecord::Base.connection.reset_pk_sequence!('users')
-ActiveRecord::Base.connection.reset_pk_sequence!('projects')
-ActiveRecord::Base.connection.reset_pk_sequence!('backings')
-ActiveRecord::Base.connection.reset_pk_sequence!('rewards')
-ActiveRecord::Base.connection.reset_pk_sequence!('categories')
+# Reset the primary key sequence (PostgreSQL only; SQLite manages this automatically)
+conn = ActiveRecord::Base.connection
+if conn.respond_to?(:reset_pk_sequence!)
+  %w[users projects backings rewards categories].each { |t| conn.reset_pk_sequence!(t) }
+end
 
 puts 'Creating Users...'
 user1 = User.create!(username:'Demo User', email: 'demo@demo.com', password: '123456', bio: 'Just your basic user.')
-user2 = User.create!(username:'Taylor Musolf', email: 't@email.com', password: '123456', bio: 'Bay Area based friendly, mild-mannered content creator')
-user3 = User.create!(username:'Karisa Musolf', email: 'k@email.com', password: '123456', bio: 'Bay Area based cooking personality that loves baking!')
+user2 = User.create!(username:'Kunal Kumar', email: 't@email.com', password: '123456', bio: 'Bay Area based friendly, mild-mannered content creator')
+user3 = User.create!(username:'Jordan Baker', email: 'k@email.com', password: '123456', bio: 'Bay Area based cooking personality that loves baking!')
 user4 = User.create!(username:'Bobs YourNeighbor', email: 'b@email.com', password: '123456', bio: 'Bob loves smart products.  Give Bob what he wants.')
 user5 = User.create!(username:'WorldsTiniest', email: 'WorldsTiniest@WorldsTiniest.com', password: '123456', bio:'At Worlds Tiniest, it’s our mission to make the smallest and most functional everyday carry, while limiting our impact on the environment. We design our products by combining versatile tools with the most durable materials to disrupt old trends and change the way you carry.')
 user6 = User.create!(username:'Gamma Jacket', email: 'GammaJacket@GammaJacket.com', password: '123456', bio: 'GAMMA by Wear Graphene. Support us today!')
@@ -68,14 +75,13 @@ project1 = Project.create!(title: "Orbit: A suspended Orbiting Camera Dolly",
     updates: "Wow. We did it, we met our funding goal!  I'm speachless",
     faq: "Q: How do you film large objects with the Orbit Pro? A: So this is a perfect set up for the Orbit Pro. With the Pro, the Arms are a little bit longer, and will give you the reach that you need in order for get far enough out from the pianist playing. I'm assuming the goal being, get a wide enough field of view so you can see the piano, see his face, and orbit around him to see his hands move. But you don't want too wide so you see the orbit motor or the scaffold.", 
     location: "Los Angeles, CA", 
-    start_date: Date.new(2021,3,15),
-    end_date: Date.new(2021,4,15), 
+    start_date: Date.new(2025,3,15),
+    end_date: Date.new(2025,4,15), 
     funding_goal: 7500,
     creator_id: user2.id,
     category_id: category3.id
 )
-file1 = URI.open("https://kicker-seeds.s3-us-west-1.amazonaws.com/orbit.jpg")
-project1.photo.attach(io: file1, filename: "#{project1.id}.jpg")
+safe_attach_photo(project1, "https://kicker-seeds.s3-us-west-1.amazonaws.com/orbit.jpg", "jpg")
 
 project2 = Project.create!(title: "ForeverPen",
     description: "Ever needed a pen and couldn’t find one? This one sits on your keys and never needs refilling - No ink, no waste!",
@@ -89,14 +95,13 @@ project2 = Project.create!(title: "ForeverPen",
     We LOVE the Kicker community and we can’t wait to bring you the most amazing pen that'll last a lifetime!",
     faq: "", 
     location: "Manchester, UK", 
-    start_date: Date.new(2021,3,30),
-    end_date: Date.new(2021,4,30), 
+    start_date: Date.new(2025,3,30),
+    end_date: Date.new(2025,4,30), 
     funding_goal: 3500,
     creator_id: user5.id,
     category_id: category3.id
 )
-file2 = URI.open("https://kicker-seeds.s3-us-west-1.amazonaws.com/forever_pen.jpg")
-project2.photo.attach(io: file2, filename: "#{project2.id}.jpg")
+safe_attach_photo(project2, "https://kicker-seeds.s3-us-west-1.amazonaws.com/forever_pen.jpg", "jpg")
 
 project3 = Project.create!(title: "GAMMA: All-Season 100% Graphene Infused Heated Jacket",
     description: "The complete high-performance heated jacket: Graphene-infused, lightweight, waterproof, breathable, durable, with 10 smart pockets!",
@@ -111,15 +116,14 @@ project3 = Project.create!(title: "GAMMA: All-Season 100% Graphene Infused Heate
     4) Machine washable: no electronics or batteries you need to worry about
     5) TSA / metal detector safe: batteries can get finnicky when traveling or going through metal detectors. Graphene and our heated elements don't trigger any systems.", 
     location: "Hong Kong, Hong Kong", 
-    start_date: Date.new(2021,4,21),
-    end_date: Date.new(2021,5,21), 
+    start_date: Date.new(2025,4,21),
+    end_date: Date.new(2025,5,21), 
     funding_goal: 5000,
     creator_id: user6.id,
     category_id: category3.id
 )
 
-file3 = URI.open("https://kicker-seeds.s3-us-west-1.amazonaws.com/gamma.jpg")
-project3.photo.attach(io: file3, filename: "#{project3.id}.jpg")
+safe_attach_photo(project3, "https://kicker-seeds.s3-us-west-1.amazonaws.com/gamma.jpg", "jpg")
 
 project4 = Project.create!(title: "100 Conversations about Antiracism",
     description: "Conversations about race, equity and justice made easier.",
@@ -129,15 +133,14 @@ project4 = Project.create!(title: "100 Conversations about Antiracism",
     updates: "I’m so excited to make these cards availble to thr public. Let’s make it happen folks!",
     faq: "", 
     location: "Oakland, CA", 
-    start_date: Date.new(2021,4,21),
-    end_date: Date.new(2021,5,21), 
+    start_date: Date.new(2025,4,21),
+    end_date: Date.new(2025,5,21), 
     funding_goal: 10000,
     creator_id: user7.id,
     category_id: category6.id
 )
 
-file4 = URI.open("https://kicker-seeds.s3-us-west-1.amazonaws.com/conversations_about_antiracism.png")
-project4.photo.attach(io: file4, filename: "#{project4.id}.png")
+safe_attach_photo(project4, "https://kicker-seeds.s3-us-west-1.amazonaws.com/conversations_about_antiracism.png", "png")
 
 project5 = Project.create!(title: "Ruffmuffs",
     description: "Earmuffs for sound sensitive dogs.",
@@ -147,15 +150,14 @@ project5 = Project.create!(title: "Ruffmuffs",
     updates: "",
     faq: "", 
     location: "San Francisco, CA", 
-    start_date: Date.new(2021,3,22),
-    end_date: Date.new(2021,4,22), 
+    start_date: Date.new(2025,3,22),
+    end_date: Date.new(2025,4,22), 
     funding_goal: 500,
     creator_id: user8.id,
     category_id: category5.id
 )
 
-file5 = URI.open("https://kicker-seeds.s3-us-west-1.amazonaws.com/ruffmuffs.jpg")
-project5.photo.attach(io: file5, filename: "#{project5.id}.jpg")
+safe_attach_photo(project5, "https://kicker-seeds.s3-us-west-1.amazonaws.com/ruffmuffs.jpg", "jpg")
 
 project6 = Project.create!(title: "UNBEATABLE - A game where music is illegal and you do crimes",
     description: "An anime-juiced rhythm adventure with a heavy focus on music and Emotions.",
@@ -163,15 +165,14 @@ project6 = Project.create!(title: "UNBEATABLE - A game where music is illegal an
     updates: "BEFORE WE GO FURTHER: Yes, White Label Episode 1 is late, and yes, it's coming very soon! BUT ALSO, from now till the release on Saturday (bug...fixes) we'll have this",
     faq: "Q: What is Unbeatable[white lable] A: It's a standalone episodic side-story game set in the UNBEATABLE universe. We'll be regularly updating it throughout the Kicker (and afterwards!) and on its completion it will be a complete game roughly the length of a full episode of UNBEATABLE. Episode 1 drops on April 10th!", 
     location: "Centreville, VA", 
-    start_date: Date.new(2021,6,22),
-    end_date: Date.new(2021,8,22), 
+    start_date: Date.new(2025,6,22),
+    end_date: Date.new(2025,8,22), 
     funding_goal: 55000,
     creator_id: user9.id,
     category_id: category6.id
 )
 
-file6 = URI.open("https://kicker-seeds.s3-us-west-1.amazonaws.com/unbeatable.png")
-project6.photo.attach(io: file6, filename: "#{project6.id}.png")
+safe_attach_photo(project6, "https://kicker-seeds.s3-us-west-1.amazonaws.com/unbeatable.png", "png")
 
 
 project7 = Project.create!(title: "S O A P B O T T L E",
@@ -182,15 +183,14 @@ project7 = Project.create!(title: "S O A P B O T T L E",
     More pledges also mean that we can start in the product development sooner and find the best materials to change this plastic-packaging world!",
     faq: "Q: Why do we need crowdfunding? A: We are developing a product that URI.opens an entirely new product category in the personal care market. Meaning that we have extensive material research, tests and the time-costly registration of our products ahead of us. Nevertheless, we are committed to realizing the concept. Because we have a clear vision and, in the end, we just know it will be worth it. But we need you!", 
     location: "Amsterdam, Netherlands", 
-    start_date: Date.new(2021,3,22),
-    end_date: Date.new(2021,4,22), 
+    start_date: Date.new(2025,3,22),
+    end_date: Date.new(2025,4,22), 
     funding_goal: 11900,
     creator_id: user10.id,
     category_id: category5.id
 )
 
-file7 = URI.open("https://kicker-seeds.s3-us-west-1.amazonaws.com/soapbottle.jpg")
-project7.photo.attach(io: file7, filename: "#{project7.id}.jpg")
+safe_attach_photo(project7, "https://kicker-seeds.s3-us-west-1.amazonaws.com/soapbottle.jpg", "jpg")
 
 project8 = Project.create!(title: "Green Salt: the healthy salt alternative",
     description: "Green Salt is a low-sodium salt that's high in protein and fiber. Made from 100% dehydrated Salicornia.",
@@ -202,15 +202,14 @@ project8 = Project.create!(title: "Green Salt: the healthy salt alternative",
     I want to thank you for your incredible support and feedback! We've gone above and beyond our funding goal.  We're really excited to begin shipping you Green Salt once this campaign ends.  We appreciate the feedback we got regarding the reach goal and packaging design.  Based on your feedback, we'll be changing our packaging design to a more minimalist and natural look that shows off the actual product in the design.",
     faq: "", 
     location: "Los Angeles, CA", 
-    start_date: Date.new(2021,2,22),
-    end_date: Date.new(2021,4,22), 
+    start_date: Date.new(2025,2,22),
+    end_date: Date.new(2025,4,22), 
     funding_goal: 5000,
     creator_id: user11.id,
     category_id: category5.id
 )
 
-file8 = URI.open("https://kicker-seeds.s3-us-west-1.amazonaws.com/greensalt.jpeg")
-project8.photo.attach(io: file8, filename: "#{project8.id}.jpeg")
+safe_attach_photo(project8, "https://kicker-seeds.s3-us-west-1.amazonaws.com/greensalt.jpeg", "jpeg")
 
 project9 = Project.create!(title: "42: the wildly improbable ideas of Douglas Adams",
     description: "A full colour, large format hardback, featuring never-seen-before extracts from Douglas's extraordinary archive.",
@@ -222,15 +221,14 @@ project9 = Project.create!(title: "42: the wildly improbable ideas of Douglas Ad
     We thought you would like to be made aware of an argument related to the book that is currently raging* in the UK press. A page from the archive that we sent out when announcing the launch of the book included Douglas complaining about being fed up with writing and referring to Arthur Dent as a burk. His peevishness doesn’t last long as you can read on the image below, but it is the spelling of the word burk that has caused the controversy.",
     faq: "Q: Will this book go on general retail? A: Yes the book will be on general retail around Autumn 2022, RRP to be confirmed.", 
     location: "London, UK", 
-    start_date: Date.new(2021,4,22),
-    end_date: Date.new(2021,5,21), 
+    start_date: Date.new(2025,4,22),
+    end_date: Date.new(2025,5,21), 
     funding_goal: 5000,
     creator_id: user12.id,
     category_id: category8.id
 )
 
-file9 = URI.open("https://kicker-seeds.s3-us-west-1.amazonaws.com/42_douglas_adams.jpg")
-project9.photo.attach(io: file9, filename: "#{project9.id}.jpg")
+safe_attach_photo(project9, "https://kicker-seeds.s3-us-west-1.amazonaws.com/42_douglas_adams.jpg", "jpg")
 
 project10 = Project.create!(title: "Third Editions: the Anime Library - JoJo's Bizarre Adventure",
     description: "We are back with a new and exciting project, dedicated to the translation of our French essay about the JoJo's Bizarre Adventure manga.",
@@ -240,15 +238,14 @@ project10 = Project.create!(title: "Third Editions: the Anime Library - JoJo's B
     updates: "",
     faq: "", 
     location: "Toulouse, France", 
-    start_date: Date.new(2021,4,13),
-    end_date: Date.new(2021,5,13), 
+    start_date: Date.new(2025,4,13),
+    end_date: Date.new(2025,5,13), 
     funding_goal: 5000,
     creator_id: user13.id,
     category_id: category2.id
 )
 
-file10 = URI.open("https://kicker-seeds.s3-us-west-1.amazonaws.com/jojo_bizarre.jpg")
-project10.photo.attach(io: file10, filename: "#{project10.id}.jpg")
+safe_attach_photo(project10, "https://kicker-seeds.s3-us-west-1.amazonaws.com/jojo_bizarre.jpg", "jpg")
 
 project11 = Project.create!(title: "NIMBLE | Salon Quality Nails From The Comfort of Your Home.",
     description: "Nimble utilizes pioneering technology to perfectly paint and completely dry your nails in a fraction of the time.",
@@ -256,15 +253,14 @@ project11 = Project.create!(title: "NIMBLE | Salon Quality Nails From The Comfor
     updates: "",
     faq: "", 
     location: "New York, NY", 
-    start_date: Date.new(2021,4,13),
-    end_date: Date.new(2021,5,28), 
+    start_date: Date.new(2025,4,13),
+    end_date: Date.new(2025,5,28), 
     funding_goal: 25000,
     creator_id: user15.id,
     category_id: category3.id
 )
 
-file11 = URI.open("https://kicker-seeds.s3-us-west-1.amazonaws.com/nimble.png")
-project11.photo.attach(io: file11, filename: "#{project11.id}.png")
+safe_attach_photo(project11, "https://kicker-seeds.s3-us-west-1.amazonaws.com/nimble.png", "png")
 
 project12 = Project.create!(title: "Yes Means Yes! A picture book about consent",
     description: "Teaching kids (and maybe adults) about understanding and respecting bodily autonomy",
@@ -280,15 +276,14 @@ project12 = Project.create!(title: "Yes Means Yes! A picture book about consent"
     Elaine and Kai",
     faq: "", 
     location: "San Jose, CA", 
-    start_date: Date.new(2021,3,3),
-    end_date: Date.new(2021,4,3), 
+    start_date: Date.new(2025,3,3),
+    end_date: Date.new(2025,4,3), 
     funding_goal: 25000,
     creator_id: user16.id,
     category_id: category8.id
 )
 
-file12 = URI.open("https://kicker-seeds.s3-us-west-1.amazonaws.com/yes_means_yes.jpg")
-project12.photo.attach(io: file12, filename: "#{project12.id}.jpg")
+safe_attach_photo(project12, "https://kicker-seeds.s3-us-west-1.amazonaws.com/yes_means_yes.jpg", "jpg")
 
 project13 = Project.create!(title: "Counting, Colors & Cthulhu Hardcover Board Book",
     description: "Rhyming Lovecraftian board book teaching numbers, colors and the mythos, from makers of C is for Cthulhu & Sweet Dreams Cthulhu!",
@@ -300,15 +295,14 @@ project13 = Project.create!(title: "Counting, Colors & Cthulhu Hardcover Board B
     The C is for Cthulhu Blanket Stuffed-Pillow is now available as a PLEDGE or an ADD-ON to any pledge!",
     faq: "", 
     location: "Newburyport, MA", 
-    start_date: Date.new(2021,3,3),
-    end_date: Date.new(2021,3,31), 
+    start_date: Date.new(2025,3,3),
+    end_date: Date.new(2025,3,31), 
     funding_goal: 15000,
     creator_id: user1.id,
     category_id: category8.id
 )
 
-file13 = URI.open("https://kicker-seeds.s3-us-west-1.amazonaws.com/cthulhu.png")
-project13.photo.attach(io: file13, filename: "#{project13.id}.png")
+safe_attach_photo(project13, "https://kicker-seeds.s3-us-west-1.amazonaws.com/cthulhu.png", "png")
 
 project14 = Project.create!(title: "Nikki Darling Confections - New Kitchen",
     description: "The New Nostalgia in Candy. Handcrafted in Chicago. It's how you remember candy tasting. It's how you imagine candy should taste.",
@@ -316,15 +310,14 @@ project14 = Project.create!(title: "Nikki Darling Confections - New Kitchen",
     updates: "",
     faq: "", 
     location: "Chicago, IL", 
-    start_date: Date.new(2021,3,3),
-    end_date: Date.new(2021,3,31), 
+    start_date: Date.new(2025,3,3),
+    end_date: Date.new(2025,3,31), 
     funding_goal: 15000,
     creator_id: user18.id,
     category_id: category5.id
 )
 
-file14 = URI.open("https://kicker-seeds.s3-us-west-1.amazonaws.com/nikki_darling.PNG")
-project14.photo.attach(io: file14, filename: "#{project14.id}.PNG")
+safe_attach_photo(project14, "https://kicker-seeds.s3-us-west-1.amazonaws.com/nikki_darling.PNG", "PNG")
 
 project15 = Project.create!(title: "FAKING FILMATION",
     description: "The evolution of cartoons, rise & fall of Filmation & one man's quest to release his unofficial cartoon despite looming legal threats.",
@@ -332,15 +325,14 @@ project15 = Project.create!(title: "FAKING FILMATION",
     updates: "Hey folks! Just wanted to take a minute and say “thank you” to everyone for your unending support and faith in us and this documentary project. I never thought we would be at this point in the campaign or if we would ever raise this amount to begin with given all the things happening in the world. It’s humbling, incredible, overwhelming and so much more. James and I have been talking a lot each night with complete awe about the sheer number of backers and rewards you’ve all selected and it means the world to both of us. While James isn’t officially part of the production, of course, one can see how supporting this documentary endeavor in turn helps supports his efforts now and going forward.",
     faq: "", 
     location: "Chicago, IL", 
-    start_date: Date.new(2021,3,3),
-    end_date: Date.new(2021,3,31), 
+    start_date: Date.new(2025,3,3),
+    end_date: Date.new(2025,3,31), 
     funding_goal: 30000,
     creator_id: user1.id,
     category_id: category4.id
 )
 
-file15 = URI.open("https://kicker-seeds.s3-us-west-1.amazonaws.com/faking_filmation.PNG")
-project15.photo.attach(io: file15, filename: "#{project15.id}.PNG")
+safe_attach_photo(project15, "https://kicker-seeds.s3-us-west-1.amazonaws.com/faking_filmation.PNG", "PNG")
 
 project16 = Project.create!(title: "Billy the Rescue Dog",
     description: "A picture book about Billy, a Treeing Walker Coonhound, and his adventures and challenges as he embarks on his new life.",
@@ -348,33 +340,31 @@ project16 = Project.create!(title: "Billy the Rescue Dog",
     updates: "In just over 48 hours we are halfway to our goal. Thank you so much for your support of Billy the Rescue Dog. We will share updates on our progress, but I wanted to take this opportunity to let you know how much we appreciate all of you. :)",
     faq: "", 
     location: "Chicago, IL", 
-    start_date: Date.new(2021,3,3),
-    end_date: Date.new(2021,5,31), 
+    start_date: Date.new(2025,3,3),
+    end_date: Date.new(2025,5,31), 
     funding_goal: 6000,
     creator_id: user20.id,
     category_id: category2.id
 )
 
-file16 = URI.open("https://kicker-seeds.s3-us-west-1.amazonaws.com/billy_the_rescue_dog.jpg")
-project16.photo.attach(io: file16, filename: "#{project16.id}.jpg")
+safe_attach_photo(project16, "https://kicker-seeds.s3-us-west-1.amazonaws.com/billy_the_rescue_dog.jpg", "jpg")
 
 project17 = Project.create!(title: "Vaca's Vegan Creamery x All Tomorrow's Pastries Cakebook",
     description: "A picture book about Billy, a Treeing Walker Coonhound, and his adventures and challenges as he embarks on his new life.",
-    campaign: "Vaca's Creamery is Chicago's first 100% vegan ice cream shop, opening May 2021! We are also publishing a vegan Cakebook!",
+    campaign: "Vaca's Creamery is Chicago's first 100% vegan ice cream shop, opening May 2025! We are also publishing a vegan Cakebook!",
     updates: "1) if you get a physical copy of the Cakebook, we will also send you a PDF as soon as it's ready!
 
     2) we thought you could pledge multiple times if you wanted, but it turns out you can't. We are including add-ons, so if you have already pledged, you can go back to your pledge and add something else. The only thing you can't do is add on a physical book to a digital reward. If you want a physical book after it's made, we will have copies for sale, though!",
     faq: "", 
     location: "Chicago, IL", 
-    start_date: Date.new(2021,3,3),
-    end_date: Date.new(2021,5,1), 
+    start_date: Date.new(2025,3,3),
+    end_date: Date.new(2025,5,1), 
     funding_goal: 15000,
     creator_id: user21.id,
     category_id: category5.id
 )
 
-file17 = URI.open("https://kicker-seeds.s3-us-west-1.amazonaws.com/vacas.jpg")
-project17.photo.attach(io: file17, filename: "#{project17.id}.jpg")
+safe_attach_photo(project17, "https://kicker-seeds.s3-us-west-1.amazonaws.com/vacas.jpg", "jpg")
 
 project18 = Project.create!(title: "Board Royale - New Expansions & Second Printing",
     description: "The next chapter of Board Royale offers competitive, collaborative & a peaceful competition to all players and all playstyles.",
@@ -392,14 +382,13 @@ project18 = Project.create!(title: "Board Royale - New Expansions & Second Print
     Also, we have revealed the next stretch goal.",
     faq: "", 
     location: "Montreal, Canada", 
-    start_date: Date.new(2021,3,3),
-    end_date: Date.new(2021,5,6), 
+    start_date: Date.new(2025,3,3),
+    end_date: Date.new(2025,5,6), 
     funding_goal: 24000,
     creator_id: user22.id,
     category_id: category6.id
 )
-file18 = URI.open("https://kicker-seeds.s3-us-west-1.amazonaws.com/board_royale.jpeg")
-project18.photo.attach(io: file18, filename: "#{project18.id}.jpeg")
+safe_attach_photo(project18, "https://kicker-seeds.s3-us-west-1.amazonaws.com/board_royale.jpeg", "jpeg")
 
 project19 = Project.create!(title: "Cardlax EarBuds Washer - Automatic Cleaning Tool for TWS",
     description: "A whole new cleaning solution for your wireless stereo. It turns them nice and clean in minutes.",
@@ -407,15 +396,14 @@ project19 = Project.create!(title: "Cardlax EarBuds Washer - Automatic Cleaning 
     updates: "We are excited to annoy, we reached our target goal in just XX minutes. Thank you all so much for an amazing support! We are all very happy to see so many backers and your enthusiasm to our campaign, and to Kicker.",
     faq: "", 
     location: "Dover, DE", 
-    start_date: Date.new(2021,4,3),
-    end_date: Date.new(2021,6,6), 
+    start_date: Date.new(2025,4,3),
+    end_date: Date.new(2025,6,6), 
     funding_goal: 5000,
     creator_id: user1.id,
     category_id: category3.id
 )
 
-file19 = URI.open("https://kicker-seeds.s3-us-west-1.amazonaws.com/cardlax.jpg")
-project19.photo.attach(io: file19, filename: "#{project19.id}.jpg")
+safe_attach_photo(project19, "https://kicker-seeds.s3-us-west-1.amazonaws.com/cardlax.jpg", "jpg")
 
 project20 = Project.create!(title: "GripBeats: Turn Your Hands Into A Musical Instrument!",
     description: "Learn the art of making music through your hands' movements and touch by using our refined and versatile wearable music technology.",
@@ -423,15 +411,14 @@ project20 = Project.create!(title: "GripBeats: Turn Your Hands Into A Musical In
     updates: "We built GripBeats® to encourage music creativity and promote self-expression through music with the help of motion and touch technology. We're so pleased that we can now implement a feature that allows users to do this now with their very own controls. GripBeats® just became a whole lot more immersive and personalized!",
     faq: "Q: Different hand sizes? A: For kids' size GripBeats® is adjustable enough to fit hands of width size as small as 6cm / 2.3\" and with the same device, a hand as large as width 11cm / 4.3\". This measurement is the width of the hand. The single strap and slidable loop mechanism allows GripBeats® to be adjusted to practically any sized hand and still allows full access to all the sensors. The length of the wrist strap section (where it connects at the wrist like a watch) is 26cm / 10\"). If these dimensions aren't on your range, please contact us and we should be able to make a slight adjustment. These are the latest measurements.  :)", 
     location: "Dover, DE", 
-    start_date: Date.new(2021,4,3),
-    end_date: Date.new(2021,6,6), 
+    start_date: Date.new(2025,4,3),
+    end_date: Date.new(2025,6,6), 
     funding_goal: 10000,
     creator_id: user2.id,
     category_id: category3.id
 )
 
-file20 = URI.open("https://kicker-seeds.s3-us-west-1.amazonaws.com/gripbeats.png")
-project20.photo.attach(io: file20, filename: "#{project20.id}.png")
+safe_attach_photo(project20, "https://kicker-seeds.s3-us-west-1.amazonaws.com/gripbeats.png", "png")
 
 project21 = Project.create!(title: "Maliek Dance Theater Building Funds",
     description: "Help Secure Maliek Dance Theater Future",
@@ -439,15 +426,14 @@ project21 = Project.create!(title: "Maliek Dance Theater Building Funds",
     updates: "",
     faq: "", 
     location: "Brooklyn, NY", 
-    start_date: Date.new(2021,5,6),
-    end_date: Date.new(2021,6,6), 
+    start_date: Date.new(2025,5,6),
+    end_date: Date.new(2025,6,6), 
     funding_goal: 3600,
     creator_id: user23.id,
     category_id: category1.id
 )
 
-file21 = URI.open("https://kicker-seeds.s3-us-west-1.amazonaws.com/maliek_dance.jpg")
-project21.photo.attach(io: file21, filename: "#{project21.id}.jpg")
+safe_attach_photo(project21, "https://kicker-seeds.s3-us-west-1.amazonaws.com/maliek_dance.jpg", "jpg")
 
 project22 = Project.create!(title: "Posture Tee | Perfect Your Posture Comfortably & Fashionably",
     description: "A subtle fashionable wearable tee that can teach & remind the body to move and keep a proper position.",
@@ -457,15 +443,14 @@ project22 = Project.create!(title: "Posture Tee | Perfect Your Posture Comfortab
     updates: "",
     faq: "", 
     location: "Los Angeles, CA", 
-    start_date: Date.new(2021,6,6),
-    end_date: Date.new(2021,7,6), 
+    start_date: Date.new(2025,6,6),
+    end_date: Date.new(2025,7,6), 
     funding_goal: 5000,
     creator_id: user23.id,
     category_id: category3.id
 )
 
-file22 = URI.open("https://kicker-seeds.s3-us-west-1.amazonaws.com/posture_tee.jpg")
-project22.photo.attach(io: file22, filename: "#{project22.id}.jpg")
+safe_attach_photo(project22, "https://kicker-seeds.s3-us-west-1.amazonaws.com/posture_tee.jpg", "jpg")
 
 project23 = Project.create!(title: "Kimberly's Cupcakes (Sugar Bloom Cakery) Expansion Project",
     description: "We need your help to design and build a larger, more equipped bakery space, to accommodate the growth we've received over the years.",
@@ -473,15 +458,14 @@ project23 = Project.create!(title: "Kimberly's Cupcakes (Sugar Bloom Cakery) Exp
     updates: "",
     faq: "", 
     location: "Redlands, CA", 
-    start_date: Date.new(2021,6,6),
-    end_date: Date.new(2021,7,6), 
+    start_date: Date.new(2025,6,6),
+    end_date: Date.new(2025,7,6), 
     funding_goal: 20000,
     creator_id: user25.id,
     category_id: category5.id
 )
 
-file23 = URI.open("https://kicker-seeds.s3-us-west-1.amazonaws.com/kimberly.jpg")
-project23.photo.attach(io: file23, filename: "#{project23.id}.jpg")
+safe_attach_photo(project23, "https://kicker-seeds.s3-us-west-1.amazonaws.com/kimberly.jpg", "jpg")
 
 project24 = Project.create!(title: "Play Everyday Magazine",
     description: "Recreational Sports Medicine Journalism",
@@ -491,15 +475,14 @@ project24 = Project.create!(title: "Play Everyday Magazine",
     updates: "",
     faq: "", 
     location: "San Diego, CA", 
-    start_date: Date.new(2021,6,6),
-    end_date: Date.new(2021,7,6), 
+    start_date: Date.new(2025,6,6),
+    end_date: Date.new(2025,7,6), 
     funding_goal: 111111,
     creator_id: user1.id,
     category_id: category8.id
 )
 
-file24 = URI.open("https://kicker-seeds.s3-us-west-1.amazonaws.com/play_everyday.png")
-project24.photo.attach(io: file24, filename: "#{project24.id}.png")
+safe_attach_photo(project24, "https://kicker-seeds.s3-us-west-1.amazonaws.com/play_everyday.png", "png")
 
 project25 = Project.create!(title: "Gordon Griffin Photography",
     description: "I would like to set up a photography business concentrating on weddings, head shots and corporate opportunities",
@@ -507,15 +490,14 @@ project25 = Project.create!(title: "Gordon Griffin Photography",
     updates: "",
     faq: "", 
     location: "Red Deer, Canada", 
-    start_date: Date.new(2021,6,6),
-    end_date: Date.new(2021,8,6), 
+    start_date: Date.new(2025,6,6),
+    end_date: Date.new(2025,8,6), 
     funding_goal: 5000,
     creator_id: user24.id,
     category_id: category1.id
 )
 
-file25 = URI.open("https://kicker-seeds.s3-us-west-1.amazonaws.com/gordon_photography.jpg")
-project25.photo.attach(io: file25, filename: "#{project25.id}.jpg")
+safe_attach_photo(project25, "https://kicker-seeds.s3-us-west-1.amazonaws.com/gordon_photography.jpg", "jpg")
 
 project26 = Project.create!(title: "String and Shadow Puppet Theater: Fauna Fantastique",
     description: "String and Shadow Puppet Theater is creating a giant puppet pageant with masks, larger-than-life-puppets and live music",
@@ -523,15 +505,14 @@ project26 = Project.create!(title: "String and Shadow Puppet Theater: Fauna Fant
     updates: "",
     faq: "", 
     location: "Olympia, WA", 
-    start_date: Date.new(2021,6,6),
-    end_date: Date.new(2021,8,6), 
+    start_date: Date.new(2025,6,6),
+    end_date: Date.new(2025,8,6), 
     funding_goal: 9000,
     creator_id: user3.id,
     category_id: category1.id
 )
 
-file26 = URI.open("https://kicker-seeds.s3-us-west-1.amazonaws.com/string_puppet_theater.jpg")
-project26.photo.attach(io: file26, filename: "#{project26.id}.jpg")
+safe_attach_photo(project26, "https://kicker-seeds.s3-us-west-1.amazonaws.com/string_puppet_theater.jpg", "jpg")
 
 project27 = Project.create!(title: "The Walk: ‘The Most Ambitious Public Artwork of Our time’",
     description: "Help a giant puppet walk 8,000km across 8 countries from the Turkey-Syria border to the UK in support of refugees.",
@@ -539,15 +520,14 @@ project27 = Project.create!(title: "The Walk: ‘The Most Ambitious Public Artwo
     updates: "",
     faq: "", 
     location: "Gaziantep, Turkey", 
-    start_date: Date.new(2021,6,6),
-    end_date: Date.new(2021,9,6), 
+    start_date: Date.new(2025,6,6),
+    end_date: Date.new(2025,9,6), 
     funding_goal: 42000,
     creator_id: user19.id,
     category_id: category1.id
 )
 
-file27 = URI.open("https://kicker-seeds.s3-us-west-1.amazonaws.com/the_walk.jpg")
-project27.photo.attach(io: file27, filename: "#{project27.id}.jpg")
+safe_attach_photo(project27, "https://kicker-seeds.s3-us-west-1.amazonaws.com/the_walk.jpg", "jpg")
 
 project28 = Project.create!(title: "FOREST FOLK - All Ages Book of Quirky Animal Comic Strips",
     description: "Sunday Funnies crash headlong into Looney Tunes. Whimsically madcap misadventures of a Fox and Elf.",
@@ -557,15 +537,14 @@ project28 = Project.create!(title: "FOREST FOLK - All Ages Book of Quirky Animal
     updates: "",
     faq: "", 
     location: "Toronto, Canada", 
-    start_date: Date.new(2021,6,6),
-    end_date: Date.new(2021,10,6), 
+    start_date: Date.new(2025,6,6),
+    end_date: Date.new(2025,10,6), 
     funding_goal: 17000,
     creator_id: user4.id,
     category_id: category2.id
 )
 
-file28 = URI.open("https://kicker-seeds.s3-us-west-1.amazonaws.com/forest_folk.png")
-project28.photo.attach(io: file28, filename: "#{project28.id}.png")
+safe_attach_photo(project28, "https://kicker-seeds.s3-us-west-1.amazonaws.com/forest_folk.png", "png")
 
 project29 = Project.create!(title: "The Lost Sunday - a fairy tale comic book about burnout",
     description: "In an enchanted world, the best day of the week is missing. Legend says an evil witch stole it – but Nina is determined to find it!",
@@ -573,15 +552,14 @@ project29 = Project.create!(title: "The Lost Sunday - a fairy tale comic book ab
     updates: "",
     faq: "", 
     location: "Cluj-Napoca, Romania", 
-    start_date: Date.new(2021,6,6),
-    end_date: Date.new(2021,10,6), 
+    start_date: Date.new(2025,6,6),
+    end_date: Date.new(2025,10,6), 
     funding_goal: 8000,
     creator_id: user2.id,
     category_id: category2.id
 )
 
-file29 = URI.open("https://kicker-seeds.s3-us-west-1.amazonaws.com/lost_sunday.png")
-project29.photo.attach(io: file29, filename: "#{project29.id}.png")
+safe_attach_photo(project29, "https://kicker-seeds.s3-us-west-1.amazonaws.com/lost_sunday.png", "png")
 
 project30 = Project.create!(title: "NORTHERN SHADE",
     description: "A disenchanted Army vet emerges from isolation when his younger brother is recruited by an extremist militia.",
@@ -593,15 +571,14 @@ project30 = Project.create!(title: "NORTHERN SHADE",
     updates: "A very special thanks to Thimble Island Brewery in Branford, CT, who donated several cases of their finest brews for our movie. Our main character Justin is a bit of a drinker, and it was important to us to feature a local brewery. And since Thimble Island's American Ale is a quintessential Connecticut go-to, it was awesome to have their support. Thank you to Greg Page and the entire Thimble Island team!",
     faq: "", 
     location: "New Haven, CT", 
-    start_date: Date.new(2021,4,6),
-    end_date: Date.new(2021,5,6), 
+    start_date: Date.new(2025,4,6),
+    end_date: Date.new(2025,5,6), 
     funding_goal: 20000,
     creator_id: user7.id,
     category_id: category4.id
 )
 
-file30 = URI.open("https://kicker-seeds.s3-us-west-1.amazonaws.com/northern_shade.jpg")
-project30.photo.attach(io: file30, filename: "#{project30.id}.jpg")
+safe_attach_photo(project30, "https://kicker-seeds.s3-us-west-1.amazonaws.com/northern_shade.jpg", "jpg")
 
 project31 = Project.create!(title: "CIECO - An Animated horror film",
     description: "A little fox girl gets lured into the deep nordic woods, Nothing is what it seems to be..",
@@ -609,15 +586,14 @@ project31 = Project.create!(title: "CIECO - An Animated horror film",
     updates:"We have been live for a few hours now and we are already almost at 20%!! Let's keep this tempo going and make sure to share this project around between friends and family!",
     faq: "Q: How long is it going to be? A: It is going to be 30min + creidt", 
     location: "Stockholm, Sweden", 
-    start_date: Date.new(2021,4,6),
-    end_date: Date.new(2021,7,6), 
+    start_date: Date.new(2025,4,6),
+    end_date: Date.new(2025,7,6), 
     funding_goal: 42000,
     creator_id: user8.id,
     category_id: category4.id
 )
 
-file31 = URI.open("https://kicker-seeds.s3-us-west-1.amazonaws.com/cieco.PNG")
-project31.photo.attach(io: file31, filename: "#{project31.id}.PNG")
+safe_attach_photo(project31, "https://kicker-seeds.s3-us-west-1.amazonaws.com/cieco.PNG", "PNG")
 
 project32 = Project.create!(title: "VALENTINE | A short film",
     description: "As Corey grows increasingly uncomfortable with his gender identity, he and his girlfriend Mia struggle to redefine their relationship.",
@@ -625,15 +601,14 @@ project32 = Project.create!(title: "VALENTINE | A short film",
     updates:"WOW!!!! THANK YOU!!!! We can’t believe we’re writing this update right now, but thanks to your overwhelming generosity, love, and support during these first five days, we have successfully met our initial $17,000 Kicker goal for VALENTINE!!! Earlier in the year, if you had told us that any of this would be happening, we never would have believed you. Even just a couple of months ago, Beck and I simply couldn’t imagine a world without quarantine, never mind a world where we might be able to raise the budget necessary to make our film. But now, thanks to your help, we have the funds needed to move into production this June, and to do so safely. THANK YOU SO MUCH!!!!",
     faq: "", 
     location: "New York, NY", 
-    start_date: Date.new(2021,5,20),
-    end_date: Date.new(2021,8,20), 
+    start_date: Date.new(2025,5,20),
+    end_date: Date.new(2025,8,20), 
     funding_goal: 17000,
     creator_id: user11.id,
     category_id: category4.id
 )
 
-file32 = URI.open("https://kicker-seeds.s3-us-west-1.amazonaws.com/valentine.jpg")
-project32.photo.attach(io: file32, filename: "#{project32.id}.jpg")
+safe_attach_photo(project32, "https://kicker-seeds.s3-us-west-1.amazonaws.com/valentine.jpg", "jpg")
 
 project33 = Project.create!(title: "Um, Actually - The Game of Nerdy Corrections",
     description: "Finally! A board game version of CollegeHumor's game show you can play at home!",
@@ -655,15 +630,14 @@ project33 = Project.create!(title: "Um, Actually - The Game of Nerdy Corrections
     How? So glad you asked. Simply complete the challenge that corresponds to the topic you want to win. Make sure to use the hashtag when you post on social media (Twitter, Facebook, or Instagram). The topic that gets the most participants will be added to the Community Deck.",
     faq: "Q: Are the questions reused from the show or are they new questions? A: All of the questions will be brand new. None of them will be repeats of questions used on the show… although they may touch on similar topics, naturally!", 
     location: "London, Canada", 
-    start_date: Date.new(2021,5,20),
-    end_date: Date.new(2021,8,20), 
+    start_date: Date.new(2025,5,20),
+    end_date: Date.new(2025,8,20), 
     funding_goal: 25000,
     creator_id: user20.id,
     category_id: category6.id
 )
 
-file33 = URI.open("https://kicker-seeds.s3-us-west-1.amazonaws.com/um_actually.png")
-project33.photo.attach(io: file33, filename: "#{project33.id}.png")
+safe_attach_photo(project33, "https://kicker-seeds.s3-us-west-1.amazonaws.com/um_actually.png", "png")
 
 project34 = Project.create!(title: "Alex Soto, Nuevo Álbum",
     description: "Ayúdame a producir mi segundo disco. Hagamos música juntos!!",
@@ -675,15 +649,14 @@ project34 = Project.create!(title: "Alex Soto, Nuevo Álbum",
     Además esta recompensa incluye los 2 Álbumes (Duro y Dale, y el Nuevo por grabar) Nombre en los agradecimientos y el Kit digital de Wallpeppers",
     faq: "", 
     location: "Mexico City, Mexico", 
-    start_date: Date.new(2021,5,20),
-    end_date: Date.new(2021,9,20), 
+    start_date: Date.new(2025,5,20),
+    end_date: Date.new(2025,9,20), 
     funding_goal: 6000,
     creator_id: user11.id,
     category_id: category7.id
 )
 
-file34 = URI.open("https://kicker-seeds.s3-us-west-1.amazonaws.com/alex_soto.jpg")
-project34.photo.attach(io: file34, filename: "#{project34.id}.jpg")
+safe_attach_photo(project34, "https://kicker-seeds.s3-us-west-1.amazonaws.com/alex_soto.jpg", "jpg")
 
 project35 = Project.create!(title: "Five Iron Frenzy album Until This Shakes Apart",
     description: "Help Five Iron Frenzy make a new album",
@@ -693,15 +666,14 @@ project35 = Project.create!(title: "Five Iron Frenzy album Until This Shakes Apa
     updates:"",
     faq: "", 
     location: "Denver, CO", 
-    start_date: Date.new(2021,1,20),
-    end_date: Date.new(2021,3,20), 
+    start_date: Date.new(2025,1,20),
+    end_date: Date.new(2025,3,20), 
     funding_goal: 60000,
     creator_id: user3.id,
     category_id: category7.id
 )
 
-file35 = URI.open("https://kicker-seeds.s3-us-west-1.amazonaws.com/five_iron.jpg")
-project35.photo.attach(io: file35, filename: "#{project35.id}.jpg")
+safe_attach_photo(project35, "https://kicker-seeds.s3-us-west-1.amazonaws.com/five_iron.jpg", "jpg")
 
 project36 = Project.create!(title: "MC Lars - Blockchain Planet",
     description: "Help MC Lars create an album about fatherhood, the pandemic and late-stage capitalism. His most personal album to date.",
@@ -709,15 +681,14 @@ project36 = Project.create!(title: "MC Lars - Blockchain Planet",
     updates:"",
     faq: "", 
     location: "Oakland, CA", 
-    start_date: Date.new(2021,1,20),
-    end_date: Date.new(2021,5,20), 
+    start_date: Date.new(2025,1,20),
+    end_date: Date.new(2025,5,20), 
     funding_goal: 5000,
     creator_id: user14.id,
     category_id: category7.id
 )
 
-file36 = URI.open("https://kicker-seeds.s3-us-west-1.amazonaws.com/mc_lars.jpg")
-project36.photo.attach(io: file36, filename: "#{project36.id}.jpg")
+safe_attach_photo(project36, "https://kicker-seeds.s3-us-west-1.amazonaws.com/mc_lars.jpg", "jpg")
 
 project37 = Project.create!(title: "Soft Bits In: Tribute to The Flaming Lips",
     description: "A recreation of 'The Soft Bulletin' by The Flaming Lips using a Nintendo and a Gameboy, pressed to vinyl.",
@@ -727,15 +698,14 @@ project37 = Project.create!(title: "Soft Bits In: Tribute to The Flaming Lips",
     updates:"",
     faq: "", 
     location: "Philadelphia, PA", 
-    start_date: Date.new(2021,1,20),
-    end_date: Date.new(2021,5,20), 
+    start_date: Date.new(2025,1,20),
+    end_date: Date.new(2025,5,20), 
     funding_goal: 8000,
     creator_id: user16.id,
     category_id: category7.id
 )
 
-file37 = URI.open("https://kicker-seeds.s3-us-west-1.amazonaws.com/soft_bits.jpg")
-project37.photo.attach(io: file37, filename: "#{project37.id}.jpg")
+safe_attach_photo(project37, "https://kicker-seeds.s3-us-west-1.amazonaws.com/soft_bits.jpg", "jpg")
 
 puts 'Creating Rewards...'
 reward1 = Reward.create!(

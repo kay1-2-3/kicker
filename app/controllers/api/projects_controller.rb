@@ -4,8 +4,10 @@ class Api::ProjectsController < ApplicationController
   def index
     @projects = Project.all.with_attached_photo.includes({creator: [:projects, :backings]}, :backings, :rewards, :category)
     if params[:query] && params[:query].downcase != 'everything'
-      # downcased_query = params[:query].downcase
-      @projects = @projects.joins(:category).where('projects.title ILIKE (?) or categories.name ILIKE (?)', "%#{params[:query]}%", "%#{params[:query]}%")
+      pt = Project.arel_table
+      ct = Category.arel_table
+      pattern = "%#{params[:query]}%"
+      @projects = @projects.joins(:category).where(pt[:title].matches(pattern).or(ct[:name].matches(pattern)))
     end
     render :index
   end
