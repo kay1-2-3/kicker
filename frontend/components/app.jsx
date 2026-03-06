@@ -43,7 +43,7 @@ const App = () => (
       <nav className='footer-page'>
         <div className='footer-box'>
           <section className='footer-links'>
-            <div className="footer-copyright">Kicker <i className="far fa-copyright"></i> {new Date().getFullYear()}</div>
+            <div className="footer-copyright">Kicker <i className="far fa-copyright"></i> 2025</div>
           </section>
         </div>
       </nav>

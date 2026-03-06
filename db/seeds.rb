@@ -81,7 +81,7 @@ project1 = Project.create!(title: "Orbit: A suspended Orbiting Camera Dolly",
     creator_id: user2.id,
     category_id: category3.id
 )
-safe_attach_photo(project1, "https://kicker-seeds.s3-us-west-1.amazonaws.com/orbit.jpg", "jpg")
+safe_attach_photo(project1, "https://picsum.photos/seed/orbit/800/600", "jpg")
 
 project2 = Project.create!(title: "ForeverPen",
     description: "Ever needed a pen and couldn’t find one? This one sits on your keys and never needs refilling - No ink, no waste!",
@@ -101,7 +101,7 @@ project2 = Project.create!(title: "ForeverPen",
     creator_id: user5.id,
     category_id: category3.id
 )
-safe_attach_photo(project2, "https://kicker-seeds.s3-us-west-1.amazonaws.com/forever_pen.jpg", "jpg")
+safe_attach_photo(project2, "https://picsum.photos/seed/foreverpen/800/600", "jpg")
 
 project3 = Project.create!(title: "GAMMA: All-Season 100% Graphene Infused Heated Jacket",
     description: "The complete high-performance heated jacket: Graphene-infused, lightweight, waterproof, breathable, durable, with 10 smart pockets!",
@@ -123,7 +123,7 @@ project3 = Project.create!(title: "GAMMA: All-Season 100% Graphene Infused Heate
     category_id: category3.id
 )
 
-safe_attach_photo(project3, "https://kicker-seeds.s3-us-west-1.amazonaws.com/gamma.jpg", "jpg")
+safe_attach_photo(project3, "https://picsum.photos/seed/gamma/800/600", "jpg")
 
 project4 = Project.create!(title: "100 Conversations about Antiracism",
     description: "Conversations about race, equity and justice made easier.",
@@ -140,7 +140,7 @@ project4 = Project.create!(title: "100 Conversations about Antiracism",
     category_id: category6.id
 )
 
-safe_attach_photo(project4, "https://kicker-seeds.s3-us-west-1.amazonaws.com/conversations_about_antiracism.png", "png")
+safe_attach_photo(project4, "https://picsum.photos/seed/antiracism/800/600", "jpg")
 
 project5 = Project.create!(title: "Ruffmuffs",
     description: "Earmuffs for sound sensitive dogs.",
@@ -157,7 +157,7 @@ project5 = Project.create!(title: "Ruffmuffs",
     category_id: category5.id
 )
 
-safe_attach_photo(project5, "https://kicker-seeds.s3-us-west-1.amazonaws.com/ruffmuffs.jpg", "jpg")
+safe_attach_photo(project5, "https://picsum.photos/seed/ruffmuffs/800/600", "jpg")
 
 project6 = Project.create!(title: "UNBEATABLE - A game where music is illegal and you do crimes",
     description: "An anime-juiced rhythm adventure with a heavy focus on music and Emotions.",
@@ -172,7 +172,7 @@ project6 = Project.create!(title: "UNBEATABLE - A game where music is illegal an
     category_id: category6.id
 )
 
-safe_attach_photo(project6, "https://kicker-seeds.s3-us-west-1.amazonaws.com/unbeatable.png", "png")
+safe_attach_photo(project6, "https://picsum.photos/seed/unbeatable/800/600", "jpg")
 
 
 project7 = Project.create!(title: "S O A P B O T T L E",
@@ -190,7 +190,7 @@ project7 = Project.create!(title: "S O A P B O T T L E",
     category_id: category5.id
 )
 
-safe_attach_photo(project7, "https://kicker-seeds.s3-us-west-1.amazonaws.com/soapbottle.jpg", "jpg")
+safe_attach_photo(project7, "https://picsum.photos/seed/soapbottle/800/600", "jpg")
 
 project8 = Project.create!(title: "Green Salt: the healthy salt alternative",
     description: "Green Salt is a low-sodium salt that's high in protein and fiber. Made from 100% dehydrated Salicornia.",
@@ -209,7 +209,7 @@ project8 = Project.create!(title: "Green Salt: the healthy salt alternative",
     category_id: category5.id
 )
 
-safe_attach_photo(project8, "https://kicker-seeds.s3-us-west-1.amazonaws.com/greensalt.jpeg", "jpeg")
+safe_attach_photo(project8, "https://picsum.photos/seed/greensalt/800/600", "jpg")
 
 project9 = Project.create!(title: "42: the wildly improbable ideas of Douglas Adams",
     description: "A full colour, large format hardback, featuring never-seen-before extracts from Douglas's extraordinary archive.",
@@ -228,7 +228,7 @@ project9 = Project.create!(title: "42: the wildly improbable ideas of Douglas Ad
     category_id: category8.id
 )
 
-safe_attach_photo(project9, "https://kicker-seeds.s3-us-west-1.amazonaws.com/42_douglas_adams.jpg", "jpg")
+safe_attach_photo(project9, "https://picsum.photos/seed/douglasadams/800/600", "jpg")
 
 project10 = Project.create!(title: "Third Editions: the Anime Library - JoJo's Bizarre Adventure",
     description: "We are back with a new and exciting project, dedicated to the translation of our French essay about the JoJo's Bizarre Adventure manga.",
@@ -245,7 +245,7 @@ project10 = Project.create!(title: "Third Editions: the Anime Library - JoJo's B
     category_id: category2.id
 )
 
-safe_attach_photo(project10, "https://kicker-seeds.s3-us-west-1.amazonaws.com/jojo_bizarre.jpg", "jpg")
+safe_attach_photo(project10, "https://picsum.photos/seed/jojo/800/600", "jpg")
 
 project11 = Project.create!(title: "NIMBLE | Salon Quality Nails From The Comfort of Your Home.",
     description: "Nimble utilizes pioneering technology to perfectly paint and completely dry your nails in a fraction of the time.",
@@ -260,7 +260,7 @@ project11 = Project.create!(title: "NIMBLE | Salon Quality Nails From The Comfor
     category_id: category3.id
 )
 
-safe_attach_photo(project11, "https://kicker-seeds.s3-us-west-1.amazonaws.com/nimble.png", "png")
+safe_attach_photo(project11, "https://picsum.photos/seed/nimble/800/600", "jpg")
 
 project12 = Project.create!(title: "Yes Means Yes! A picture book about consent",
     description: "Teaching kids (and maybe adults) about understanding and respecting bodily autonomy",
@@ -283,7 +283,7 @@ project12 = Project.create!(title: "Yes Means Yes! A picture book about consent"
     category_id: category8.id
 )
 
-safe_attach_photo(project12, "https://kicker-seeds.s3-us-west-1.amazonaws.com/yes_means_yes.jpg", "jpg")
+safe_attach_photo(project12, "https://picsum.photos/seed/yesmeansyes/800/600", "jpg")
 
 project13 = Project.create!(title: "Counting, Colors & Cthulhu Hardcover Board Book",
     description: "Rhyming Lovecraftian board book teaching numbers, colors and the mythos, from makers of C is for Cthulhu & Sweet Dreams Cthulhu!",
@@ -302,7 +302,7 @@ project13 = Project.create!(title: "Counting, Colors & Cthulhu Hardcover Board B
     category_id: category8.id
 )
 
-safe_attach_photo(project13, "https://kicker-seeds.s3-us-west-1.amazonaws.com/cthulhu.png", "png")
+safe_attach_photo(project13, "https://picsum.photos/seed/cthulhu/800/600", "jpg")
 
 project14 = Project.create!(title: "Nikki Darling Confections - New Kitchen",
     description: "The New Nostalgia in Candy. Handcrafted in Chicago. It's how you remember candy tasting. It's how you imagine candy should taste.",
@@ -317,7 +317,7 @@ project14 = Project.create!(title: "Nikki Darling Confections - New Kitchen",
     category_id: category5.id
 )
 
-safe_attach_photo(project14, "https://kicker-seeds.s3-us-west-1.amazonaws.com/nikki_darling.PNG", "PNG")
+safe_attach_photo(project14, "https://picsum.photos/seed/nikkidarling/800/600", "jpg")
 
 project15 = Project.create!(title: "FAKING FILMATION",
     description: "The evolution of cartoons, rise & fall of Filmation & one man's quest to release his unofficial cartoon despite looming legal threats.",
@@ -332,7 +332,7 @@ project15 = Project.create!(title: "FAKING FILMATION",
     category_id: category4.id
 )
 
-safe_attach_photo(project15, "https://kicker-seeds.s3-us-west-1.amazonaws.com/faking_filmation.PNG", "PNG")
+safe_attach_photo(project15, "https://picsum.photos/seed/filmation/800/600", "jpg")
 
 project16 = Project.create!(title: "Billy the Rescue Dog",
     description: "A picture book about Billy, a Treeing Walker Coonhound, and his adventures and challenges as he embarks on his new life.",
@@ -347,7 +347,7 @@ project16 = Project.create!(title: "Billy the Rescue Dog",
     category_id: category2.id
 )
 
-safe_attach_photo(project16, "https://kicker-seeds.s3-us-west-1.amazonaws.com/billy_the_rescue_dog.jpg", "jpg")
+safe_attach_photo(project16, "https://picsum.photos/seed/billydog/800/600", "jpg")
 
 project17 = Project.create!(title: "Vaca's Vegan Creamery x All Tomorrow's Pastries Cakebook",
     description: "A picture book about Billy, a Treeing Walker Coonhound, and his adventures and challenges as he embarks on his new life.",
@@ -364,7 +364,7 @@ project17 = Project.create!(title: "Vaca's Vegan Creamery x All Tomorrow's Pastr
     category_id: category5.id
 )
 
-safe_attach_photo(project17, "https://kicker-seeds.s3-us-west-1.amazonaws.com/vacas.jpg", "jpg")
+safe_attach_photo(project17, "https://picsum.photos/seed/vacas/800/600", "jpg")
 
 project18 = Project.create!(title: "Board Royale - New Expansions & Second Printing",
     description: "The next chapter of Board Royale offers competitive, collaborative & a peaceful competition to all players and all playstyles.",
@@ -388,7 +388,7 @@ project18 = Project.create!(title: "Board Royale - New Expansions & Second Print
     creator_id: user22.id,
     category_id: category6.id
 )
-safe_attach_photo(project18, "https://kicker-seeds.s3-us-west-1.amazonaws.com/board_royale.jpeg", "jpeg")
+safe_attach_photo(project18, "https://picsum.photos/seed/boardroyale/800/600", "jpg")
 
 project19 = Project.create!(title: "Cardlax EarBuds Washer - Automatic Cleaning Tool for TWS",
     description: "A whole new cleaning solution for your wireless stereo. It turns them nice and clean in minutes.",
@@ -403,7 +403,7 @@ project19 = Project.create!(title: "Cardlax EarBuds Washer - Automatic Cleaning 
     category_id: category3.id
 )
 
-safe_attach_photo(project19, "https://kicker-seeds.s3-us-west-1.amazonaws.com/cardlax.jpg", "jpg")
+safe_attach_photo(project19, "https://picsum.photos/seed/cardlax/800/600", "jpg")
 
 project20 = Project.create!(title: "GripBeats: Turn Your Hands Into A Musical Instrument!",
     description: "Learn the art of making music through your hands' movements and touch by using our refined and versatile wearable music technology.",
@@ -418,7 +418,7 @@ project20 = Project.create!(title: "GripBeats: Turn Your Hands Into A Musical In
     category_id: category3.id
 )
 
-safe_attach_photo(project20, "https://kicker-seeds.s3-us-west-1.amazonaws.com/gripbeats.png", "png")
+safe_attach_photo(project20, "https://picsum.photos/seed/gripbeats/800/600", "jpg")
 
 project21 = Project.create!(title: "Maliek Dance Theater Building Funds",
     description: "Help Secure Maliek Dance Theater Future",
@@ -433,7 +433,7 @@ project21 = Project.create!(title: "Maliek Dance Theater Building Funds",
     category_id: category1.id
 )
 
-safe_attach_photo(project21, "https://kicker-seeds.s3-us-west-1.amazonaws.com/maliek_dance.jpg", "jpg")
+safe_attach_photo(project21, "https://picsum.photos/seed/maliekdance/800/600", "jpg")
 
 project22 = Project.create!(title: "Posture Tee | Perfect Your Posture Comfortably & Fashionably",
     description: "A subtle fashionable wearable tee that can teach & remind the body to move and keep a proper position.",
@@ -450,7 +450,7 @@ project22 = Project.create!(title: "Posture Tee | Perfect Your Posture Comfortab
     category_id: category3.id
 )
 
-safe_attach_photo(project22, "https://kicker-seeds.s3-us-west-1.amazonaws.com/posture_tee.jpg", "jpg")
+safe_attach_photo(project22, "https://picsum.photos/seed/posturetee/800/600", "jpg")
 
 project23 = Project.create!(title: "Kimberly's Cupcakes (Sugar Bloom Cakery) Expansion Project",
     description: "We need your help to design and build a larger, more equipped bakery space, to accommodate the growth we've received over the years.",
@@ -465,7 +465,7 @@ project23 = Project.create!(title: "Kimberly's Cupcakes (Sugar Bloom Cakery) Exp
     category_id: category5.id
 )
 
-safe_attach_photo(project23, "https://kicker-seeds.s3-us-west-1.amazonaws.com/kimberly.jpg", "jpg")
+safe_attach_photo(project23, "https://picsum.photos/seed/kimberly/800/600", "jpg")
 
 project24 = Project.create!(title: "Play Everyday Magazine",
     description: "Recreational Sports Medicine Journalism",
@@ -482,7 +482,7 @@ project24 = Project.create!(title: "Play Everyday Magazine",
     category_id: category8.id
 )
 
-safe_attach_photo(project24, "https://kicker-seeds.s3-us-west-1.amazonaws.com/play_everyday.png", "png")
+safe_attach_photo(project24, "https://picsum.photos/seed/playeveryday/800/600", "jpg")
 
 project25 = Project.create!(title: "Gordon Griffin Photography",
     description: "I would like to set up a photography business concentrating on weddings, head shots and corporate opportunities",
@@ -497,7 +497,7 @@ project25 = Project.create!(title: "Gordon Griffin Photography",
     category_id: category1.id
 )
 
-safe_attach_photo(project25, "https://kicker-seeds.s3-us-west-1.amazonaws.com/gordon_photography.jpg", "jpg")
+safe_attach_photo(project25, "https://picsum.photos/seed/gordonphoto/800/600", "jpg")
 
 project26 = Project.create!(title: "String and Shadow Puppet Theater: Fauna Fantastique",
     description: "String and Shadow Puppet Theater is creating a giant puppet pageant with masks, larger-than-life-puppets and live music",
@@ -512,7 +512,7 @@ project26 = Project.create!(title: "String and Shadow Puppet Theater: Fauna Fant
     category_id: category1.id
 )
 
-safe_attach_photo(project26, "https://kicker-seeds.s3-us-west-1.amazonaws.com/string_puppet_theater.jpg", "jpg")
+safe_attach_photo(project26, "https://picsum.photos/seed/puppettheater/800/600", "jpg")
 
 project27 = Project.create!(title: "The Walk: ‘The Most Ambitious Public Artwork of Our time’",
     description: "Help a giant puppet walk 8,000km across 8 countries from the Turkey-Syria border to the UK in support of refugees.",
@@ -527,7 +527,7 @@ project27 = Project.create!(title: "The Walk: ‘The Most Ambitious Public Artwo
     category_id: category1.id
 )
 
-safe_attach_photo(project27, "https://kicker-seeds.s3-us-west-1.amazonaws.com/the_walk.jpg", "jpg")
+safe_attach_photo(project27, "https://picsum.photos/seed/thewalk/800/600", "jpg")
 
 project28 = Project.create!(title: "FOREST FOLK - All Ages Book of Quirky Animal Comic Strips",
     description: "Sunday Funnies crash headlong into Looney Tunes. Whimsically madcap misadventures of a Fox and Elf.",
@@ -544,7 +544,7 @@ project28 = Project.create!(title: "FOREST FOLK - All Ages Book of Quirky Animal
     category_id: category2.id
 )
 
-safe_attach_photo(project28, "https://kicker-seeds.s3-us-west-1.amazonaws.com/forest_folk.png", "png")
+safe_attach_photo(project28, "https://picsum.photos/seed/forestfolk/800/600", "jpg")
 
 project29 = Project.create!(title: "The Lost Sunday - a fairy tale comic book about burnout",
     description: "In an enchanted world, the best day of the week is missing. Legend says an evil witch stole it – but Nina is determined to find it!",
@@ -559,7 +559,7 @@ project29 = Project.create!(title: "The Lost Sunday - a fairy tale comic book ab
     category_id: category2.id
 )
 
-safe_attach_photo(project29, "https://kicker-seeds.s3-us-west-1.amazonaws.com/lost_sunday.png", "png")
+safe_attach_photo(project29, "https://picsum.photos/seed/lostsunday/800/600", "jpg")
 
 project30 = Project.create!(title: "NORTHERN SHADE",
     description: "A disenchanted Army vet emerges from isolation when his younger brother is recruited by an extremist militia.",
@@ -578,7 +578,7 @@ project30 = Project.create!(title: "NORTHERN SHADE",
     category_id: category4.id
 )
 
-safe_attach_photo(project30, "https://kicker-seeds.s3-us-west-1.amazonaws.com/northern_shade.jpg", "jpg")
+safe_attach_photo(project30, "https://picsum.photos/seed/northernshade/800/600", "jpg")
 
 project31 = Project.create!(title: "CIECO - An Animated horror film",
     description: "A little fox girl gets lured into the deep nordic woods, Nothing is what it seems to be..",
@@ -593,7 +593,7 @@ project31 = Project.create!(title: "CIECO - An Animated horror film",
     category_id: category4.id
 )
 
-safe_attach_photo(project31, "https://kicker-seeds.s3-us-west-1.amazonaws.com/cieco.PNG", "PNG")
+safe_attach_photo(project31, "https://picsum.photos/seed/cieco/800/600", "jpg")
 
 project32 = Project.create!(title: "VALENTINE | A short film",
     description: "As Corey grows increasingly uncomfortable with his gender identity, he and his girlfriend Mia struggle to redefine their relationship.",
@@ -608,7 +608,7 @@ project32 = Project.create!(title: "VALENTINE | A short film",
     category_id: category4.id
 )
 
-safe_attach_photo(project32, "https://kicker-seeds.s3-us-west-1.amazonaws.com/valentine.jpg", "jpg")
+safe_attach_photo(project32, "https://picsum.photos/seed/valentine/800/600", "jpg")
 
 project33 = Project.create!(title: "Um, Actually - The Game of Nerdy Corrections",
     description: "Finally! A board game version of CollegeHumor's game show you can play at home!",
@@ -637,7 +637,7 @@ project33 = Project.create!(title: "Um, Actually - The Game of Nerdy Corrections
     category_id: category6.id
 )
 
-safe_attach_photo(project33, "https://kicker-seeds.s3-us-west-1.amazonaws.com/um_actually.png", "png")
+safe_attach_photo(project33, "https://picsum.photos/seed/umactually/800/600", "jpg")
 
 project34 = Project.create!(title: "Alex Soto, Nuevo Álbum",
     description: "Ayúdame a producir mi segundo disco. Hagamos música juntos!!",
@@ -656,7 +656,7 @@ project34 = Project.create!(title: "Alex Soto, Nuevo Álbum",
     category_id: category7.id
 )
 
-safe_attach_photo(project34, "https://kicker-seeds.s3-us-west-1.amazonaws.com/alex_soto.jpg", "jpg")
+safe_attach_photo(project34, "https://picsum.photos/seed/alexsoto/800/600", "jpg")
 
 project35 = Project.create!(title: "Five Iron Frenzy album Until This Shakes Apart",
     description: "Help Five Iron Frenzy make a new album",
@@ -673,7 +673,7 @@ project35 = Project.create!(title: "Five Iron Frenzy album Until This Shakes Apa
     category_id: category7.id
 )
 
-safe_attach_photo(project35, "https://kicker-seeds.s3-us-west-1.amazonaws.com/five_iron.jpg", "jpg")
+safe_attach_photo(project35, "https://picsum.photos/seed/fiveiron/800/600", "jpg")
 
 project36 = Project.create!(title: "MC Lars - Blockchain Planet",
     description: "Help MC Lars create an album about fatherhood, the pandemic and late-stage capitalism. His most personal album to date.",
@@ -688,7 +688,7 @@ project36 = Project.create!(title: "MC Lars - Blockchain Planet",
     category_id: category7.id
 )
 
-safe_attach_photo(project36, "https://kicker-seeds.s3-us-west-1.amazonaws.com/mc_lars.jpg", "jpg")
+safe_attach_photo(project36, "https://picsum.photos/seed/mclars/800/600", "jpg")
 
 project37 = Project.create!(title: "Soft Bits In: Tribute to The Flaming Lips",
     description: "A recreation of 'The Soft Bulletin' by The Flaming Lips using a Nintendo and a Gameboy, pressed to vinyl.",
@@ -705,7 +705,7 @@ project37 = Project.create!(title: "Soft Bits In: Tribute to The Flaming Lips",
     category_id: category7.id
 )
 
-safe_attach_photo(project37, "https://kicker-seeds.s3-us-west-1.amazonaws.com/soft_bits.jpg", "jpg")
+safe_attach_photo(project37, "https://picsum.photos/seed/softbits/800/600", "jpg")
 
 puts 'Creating Rewards...'
 reward1 = Reward.create!(
