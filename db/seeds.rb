@@ -72,7 +72,7 @@ puts 'Creating Projects...'
 project1 = Project.create!(title: "Orbit: A suspended Orbiting Camera Dolly",
     description: "What tool does a cinematographer build for himself? A stealthy silent, bluetooth controlled, orbiting camera dolly with lighting.",
     campaign: "The ORBIT is a suspended camera system that ORBITS around people, objects, or environments, at variable speeds and distances",
-    updates: "Wow. We did it, we met our funding goal!  I'm speachless",
+    updates: "Wow. We did it, we met our funding goal!  I'm speechless",
     faq: "Q: How do you film large objects with the Orbit Pro? A: So this is a perfect set up for the Orbit Pro. With the Pro, the Arms are a little bit longer, and will give you the reach that you need in order for get far enough out from the pianist playing. I'm assuming the goal being, get a wide enough field of view so you can see the piano, see his face, and orbit around him to see his hands move. But you don't want too wide so you see the orbit motor or the scaffold.", 
     location: "Los Angeles, CA", 
     start_date: Date.new(2025,3,15),
@@ -81,7 +81,7 @@ project1 = Project.create!(title: "Orbit: A suspended Orbiting Camera Dolly",
     creator_id: user2.id,
     category_id: category3.id
 )
-safe_attach_photo(project1, "https://picsum.photos/seed/orbit/800/600", "jpg")
+safe_attach_photo(project1, "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=800&q=80", "jpg")
 
 project2 = Project.create!(title: "ForeverPen",
     description: "Ever needed a pen and couldn’t find one? This one sits on your keys and never needs refilling - No ink, no waste!",
