@@ -1,297 +1,64 @@
-<div align='center'><img width="400" alt="kicker_logo" src="https://user-images.githubusercontent.com/71670060/119078326-d25fba80-b9aa-11eb-8578-35f03d680a2b.PNG"></div>
+# Kicker
 
+A crowdfunding platform where creators launch projects and backers support them in exchange for rewards. Browse by category, search, and manage your projects and backings from a single dashboard.
 
-Kicker is a Kickstarter-style crowdfunding platform where creators can showcase their passion projects and seek financial support to bring them to life. Users can launch their own projects or browse others by category, explore project details, and contribute funds in exchange for rewards.
+**Stack:** React, Redux, Rails, PostgreSQL (SQLite in development)
 
-The Kicker build utilizes a React/Redux frontend framework integrated with a Ruby on Rails/PostgreSQL backend.
+---
 
 ## Getting Started
 
-### Prerequisites
-
-- **Ruby 3.1.1** (see [ruby-lang.org](https://www.ruby-lang.org/) or use [rbenv](https://github.com/rbenv/rbenv) / [rvm](https://rvm.io/))
-- **Node.js** (v14+ recommended; the repo lists 10.13.0 but current Node works)
-- **PostgreSQL** (installed and running)
-- **npm** (comes with Node)
-
-### 1. Clone and enter the project
+**Prerequisites:** Ruby 3.4+, Node.js 18+, npm. For development without PostgreSQL, the app uses SQLite by default.
 
 ```bash
-cd Kicker-main
-```
-
-### 2. Backend (Rails)
-
-```bash
-# Install Ruby gems
+# Backend
 bundle install
-
-# Create the database
 bundle exec rails db:create
-
-# Run migrations
 bundle exec rails db:migrate
-
-# (Optional) Seed the database with sample projects
 bundle exec rails db:seed
-```
 
-### 3. Frontend (React + Webpack)
-
-```bash
-# Install Node dependencies
+# Frontend (separate terminal)
 npm install
-
-# Build the JavaScript bundle (run once, or use `npm start` to watch)
 npm run start
-```
 
-Keep `npm run start` running in a separate terminal so the bundle rebuilds when you change frontend code.
-
-### 4. Run the app
-
-In another terminal:
-
-```bash
+# Server (another terminal)
 bundle exec rails server
 ```
 
-Open **http://localhost:3000** in your browser.
+Open **http://localhost:3000**.
 
-### Troubleshooting
+**Tips:** Use `bundle exec` for all `rails` commands. If the page shows "React is broke!", run `npm run start` at least once to build the JS bundle. On Windows, if PostgreSQL is required, set `username` and `password` in `config/database.yml`.
 
-- **PostgreSQL connection errors (e.g. on Windows):**  
-  Edit `config/database.yml` and set `username` and `password` for the `development` section to match your PostgreSQL user (or leave blank if your OS user is the DB owner).
+---
 
-- **"React is broke!" on the page:**  
-  Make sure you ran `npm install` and `npm run start` (or at least one `npm run start` / `webpack` build) so `app/assets/javascripts/bundle.js` exists.
+## Features
 
-- **"Could not find rails-7.0.7... Run \`bundle install\`":**  
-  Run Rails via Bundler: `bundle exec rails db:create` (and use `bundle exec` for all `rails` commands so the correct gems are used).
+- Browse and search projects without an account
+- Sign up / log in with secure authentication
+- Create, edit, and delete projects and rewards
+- Back projects and manage backings from your dashboard
+- Category discovery and project deadlines with clear status (backer, creator, signed in)
 
-- **Database or migration errors:**  
-  Try `bundle exec rails db:drop db:create db:migrate` (this wipes the dev DB and recreates it).
+---
 
-- **Image uploads:**  
-  Development uses local disk storage; no AWS setup is required. Production uses S3 via Rails credentials.
+## Tech
 
-## Technologies:
+| Layer    | Tools |
+| -------- | ----- |
+| Frontend | React, Redux, React Router, Webpack, jQuery/Ajax |
+| Backend  | Ruby on Rails, PostgreSQL / SQLite, BCrypt, Active Storage (S3 in production) |
 
-### Frontend
-* `React` - Open source, component-based JavaScript/UI library
-* `Redux` - Commonly used with React, Redux is also a JavaScript library with a primary function of handling application state
-* `Jquery/Ajax` - JavaScript library used to send promise-based, asynchronous HTTP requests to REST endpoints and perform CRUD operations
+---
 
-### Backend
-* `Ruby on Rails` - Server-side web application framework written in Ruby
-* `PostgreSQL` - Open-source relational database management system emphasizing extensibility and SQL compliance
-* `BCrypt` - Password hashing/salting for user authentication
-* `AWS S3` - Cloud service platform that assists in hosting image assests
+## Implementation notes
 
-## Features:
-* Users can view existing projects while not logged in
-* User Authentication - users can sign up or log in to a corresponding user account
-* Users can create, edit, delete and back projects and rewards if logged in
-* Users can discover new projects through category pages or can search for existing projects
-* User Dashboard that shows all user related projects and access to edit and delete links
-* User status management on project show page checks if user is already a backer, is the project creator or if they are signed in and displays appropriate messages.
+- **Backing eligibility:** Back button is shown only when the user is signed in, is not the project creator, has not already backed, and the project is still active. Messages explain why backing is disabled when it isn’t allowed.
+- **Search:** Query is sent to `/api/projects?query=...`. Backend filters by project title and category name (case-insensitive). Empty or “everything” returns all projects; no results triggers suggested projects on the frontend.
 
+---
 
-## Logging In to Back a Project:
-* Implemented multiple validation checks to ensure users were eligible to back a project verifying whether they were logged in, confirming they were not the project creator, ensuring they had not already backed the project, and checking that the project was still active.
-In this example, the user must log in before selecting a project reward.
+## Possible next steps
 
-![backing](https://user-images.githubusercontent.com/71670060/119169565-04a70180-ba17-11eb-9524-716999ca6106.gif)
-
-
-```javascript
-//project_show.jsx
-
-  projectOver(){
-    return this.daysLeft(this.props.project) === 0;
-  }
-
-    signedIn(){
-    return this.props.session !== null;
-  }
-
-  isCreator(){
-    return this.props.session === this.props.project.creator.id
-  }
-
-  backerSubmitEligible(){
-    if(this.signedIn() && !this.isCreator() && !this.projectOver() && !this.isBacker()){
-      return(
-        <input className='reward-support-submit' type="submit" value='Continue'/>
-      )
-    } else {
-      return(
-        <div className='reward-support-submit-disabled'>Continue</div>
-      )
-    }
-    
-  }
-
-  isBacker(){
-    if(this.props.project.backings){
-    const backings = Object.values(this.props.project.backings);
-    let backers = [];
-    
-    backings.forEach((backing)=>{
-      backers.push(backing.backer_id);
-    })
-    return backers.includes(this.props.session)
-    }else{
-      return false
-    }
-  }
-
-  backerMessage(){
-    if(this.isBacker()){
-      return (<div>You backed this project!</div>)
-    }
-  }
-
-  rewardErrorMessage(){
-    if(this.isCreator()){
-      return (
-        <p className='reward-error'>You cannot back your own project</p>
-      )
-    } else if(this.isBacker()){
-      return (
-        <p className='reward-error'>You have already backed this project</p>
-      )
-    } else if(!this.signedIn()){
-      return (
-        <p className='reward-error'>You must be signed in to back a project</p>
-      )
-    }  
-  }
-```
-
-## Search Backend:
-* User's search query is passed in via :wildcard in frontend URL `/projects/search/:query` which is then mapped within an AJAX request to a backend route of `/api/projects?query=${query}`
-* That AJAX request is routed to the corresponding controller action which in this case is a method called `index`
-* Within this method an ActiveRecord query is run matching against project's title or category name in backend controller.
-* If there are no results or if a query of 'everything' was used, then all projects are returned.
-
-```javascript
-//frontend/util/project_api_util.js
-
-export const fetchProjects = (query) => { //function can either receive a query and filter results or receive no query and return 
-  let path;
-  if(query){
-    path = `/api/projects?query=${query}`
-  } else {
-    path = `/api/projects`
-  }
-  return $.ajax({
-    method: 'GET',
-    url: path
-  })
-};
-
-```
-
-
-```ruby
-# app/controllers/api/projects_controller.rb
-def index
-    @projects = Project.all.with_attached_photo.includes({creator: [:projects, :backings]}, :backings, :rewards, :category) #ActiveRecord query that prefetches all projects and corresponding associated data
-    if params[:query] && params[:query].downcase != 'everything' #check if there was a query provided and if it wasn't the 'everything' query
-      @projects = @projects.joins(:category).where('projects.title ILIKE (?) or categories.name ILIKE (?)', "%#{params[:query]}%", "%#{params[:query]}%")
-      #this above query chains off of the one 2 lines above as one query since ActiveRecord Queries are lazy loaded.
-    end
-    render :index
-end
-
-
-```
-
-
-## Search Frontend:
-* User's search query is passed in via :wildcard in frontend URL `/projects/search/:query` and then passed as an argument to `fetchProjects` function.
-* In the below code block you will see how the `SearchPage` component handles fetching the search results and checking if no search matches were found.  
-* If there are no results, user receives a message that no projects were found and all projects are returned.
-
-![search](https://user-images.githubusercontent.com/71670060/119175892-420f8d00-ba1f-11eb-84eb-42ec4d5f0ebf.gif)
-
-```javascript
-
-//search_page.jsx
-
-
-componentDidUpdate(prevProps){ //works the sames as componentDidMount but is watching for if the query has changed via new user search input
-    if(prevProps.query !== this.props.query){
-      this.setState({receivedResults: true})
-      this.props.fetchProjects(this.props.query).then(res => Object.keys(res.projects).length === 0 
-      ? this.fetchSuggestions() 
-      : null);
-    }
-  }
-
-componentDidMount(){
-    this.setState({receivedResults: true}) //receivedResults is a state Boolean that confirms we found matching search results. Right now we are assuming we will.
-    this.props.fetchProjects(this.props.query)
-      .then(res => Object.keys(res.projects).length === 0 
-      ? this.fetchSuggestions() 
-      : null);  //we call fetchProjects backend query function with a query argument that comes from the user search and if there are no results we call fetchSuggestions.
-}
-
-  results(){ //function to determine jsx output for the projects we will render
-    const{projects} = this.props; //projects being passed through via mapStateToProps
-    const projectResults = Object.values(projects); //convert object of project objects to an array of project objects
-
-  fetchSuggestions(){ //if there are no search results we are going to fetch other projects as suggestions to show instead
-    this.props.fetchProjects(); //backend query that will fetch projects
-    this.setState({receivedResults: false}) //we have confirmed no search results returned so we set receivedResults to false
-  }
-
-    if(projects){
-      if(this.state.receivedResults){ //condition checking we received matching project results
-        return(
-          <section className='search-results'>
-            <h1>Explore <strong>{projectResults.length} projects</strong></h1>
-            <div className='search-projects-container'>
-              {projectResults.map(project => (
-                <ProjectSearchItem
-                  project={project}
-                  key={[project.id]}
-                />
-              ))}
-            </div>
-          </section>
-        )
-      } else { //alternative condition for the scenario we got no matches and will instead show project suggestions
-        return(
-          <div>
-            <div className='search-no-results'>
-              <h1><i className="fas fa-exclamation-circle"></i>   We can't find projects that match your search</h1>
-              <h2>Check out a collection of popular and recommended options below</h2>
-            </div>
-            <section className='search-results'>
-              <h1>Explore <strong>{projectResults.length} projects</strong></h1>
-              <div className='search-projects-container'>
-                {projectResults.map(project => (
-                  <ProjectSearchItem
-                    project={project}
-                    key={[project.id]}
-                  />
-                ))}
-              </div>
-            </section>
-          </div>
-        )
-      }
-    }
-  }
-
-
-```
-
-## Future Implementations:
- - Project being funded and terminated features
- - Search filtering
- - New Edit options
-
-
+- Project funded / ended state and messaging
+- Richer search filters
+- Expanded project edit options
